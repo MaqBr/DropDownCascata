@@ -1,0 +1,42 @@
+﻿
+<h2>Escolha as opções abaixo:</h2>
+
+    <div class="form-group">
+        <label for="Estado">Estado:</label>
+        <select id="Estado" name="Estado" class="form-control"></select>
+    </div>
+
+    <div class="form-group">
+        <label for="Cidade">Cidade:</label>
+        <select id="Cidade" name="Cidade" class="form-control"></select>
+    </div>
+
+
+@section scripts {
+    
+    <script type="text/javascript">
+        $(function () {
+            $.getJSON("/Estado/ObterEstados", function (data) {
+                var items = "<option value=''>-- Selecione --</option>";
+                $.each(data, function (i, estado) {
+                    items += "<option value='" + estado.Value + "'>" + estado.Text + "</option>";
+                });
+                $("#Estado").html(items);
+            });
+
+            $("#Estado").change(function () {
+                $.getJSON("/Estado/ObterCidades/" + $("#Estado > option:selected").attr("value"), function (data) {
+                    var items = "<option value=''>-- Selecione --</option>";
+                    $.each(data, function (i, cidade) {
+                        items += "<option value='" + cidade.Value + "'>" + cidade.Text + "</option>";
+                    });
+                    $("#Cidade").html(items);
+                });
+            });
+        });
+
+
+</script>
+    
+}
+
